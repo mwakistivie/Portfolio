@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>M@EVE Technologies — Web Design, Branding & Digital Marketing Portfolio</title>
+<title>M@EVE Technologies — Software Engineering, Web Design, Branding & Digital Marketing Portfolio</title>
 <meta name="description" content="M@EVE Technologies portfolio — creative web design, branding, app development and digital marketing services. View our work and get in touch on WhatsApp." />
 <meta name="keywords" content="web design, branding, portfolio, app development, digital marketing, UI UX design, M@EVE Technologies" />
 <meta name="author" content="M@EVE Technologies" />
@@ -705,28 +705,27 @@
   }, { threshold: .15 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  // WhatsApp number — replace with your real international number (no +, no spaces, e.g. 254712345678)
+ ========== WHATSAPP INTEGRATION (FIXED) ==========
+  
+  // Your WhatsApp Business number (format: country code + number, NO + sign)
   const WHATSAPP_NUMBER = '254758952463';
-
-  // Build WhatsApp message from contact form
+ 
+  // Get form elements
   const contactForm = document.getElementById('contactForm');
   const waModal = document.getElementById('waModal');
   const waPreview = document.getElementById('waPreview');
   const waCancel = document.getElementById('waCancel');
   const waConfirm = document.getElementById('waConfirm');
   let pendingWaUrl = '';
-  console.log("waModal:", waModal);
-console.log("waPreview:", waPreview);
-console.log("waCancel:", waCancel);
-console.log("waConfirm:", waConfirm);
-
+ 
+  // Build WhatsApp message from form data
   function buildWaMessage() {
     const name = document.getElementById('formName').value.trim();
     const email = document.getElementById('formEmail').value.trim();
     const phone = document.getElementById('formPhone').value.trim();
     const subject = document.getElementById('formSubject').value.trim();
     const message = document.getElementById('formMessage').value.trim();
-
+ 
     let text = `Hi M@EVE Technologies, I'd like to discuss a project.`;
     text += `\n\n*Name:* ${name}`;
     text += `\n*Email:* ${email}`;
@@ -735,54 +734,79 @@ console.log("waConfirm:", waConfirm);
     text += `\n\n*Message:*\n${message}`;
     return text;
   }
-
-    contactForm.addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    if (!contactForm.checkValidity()) {
-        contactForm.reportValidity();
-        return;
-    }
-
-    const phone = document.getElementById("formPhone").value.trim();
-
-    if (!/^\+?[1-9]\d{7,14}$/.test(phone)) {
-        alert("Please enter a valid phone number with country code.");
-        return;
-    }
-
-    openWaModal();
-});
-});
-
+ 
+  // Open modal to confirm WhatsApp message
   function openWaModal() {
     const text = buildWaMessage();
     waPreview.textContent = text;
     pendingWaUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
     waModal.classList.add('open');
     document.body.style.overflow = 'hidden';
+    console.log('Modal opened. WhatsApp URL:', pendingWaUrl); // DEBUG
   }
+ 
+  // Close modal
   function closeWaModal() {
     waModal.classList.remove('open');
     document.body.style.overflow = '';
   }
-
-  if (waCancel) {
-    waCancel.addEventListener('click', closeWaModal);
-}
-
-if (waConfirm) {
-    waConfirm.addEventListener('click', () => {
-        window.open(pendingWaUrl, "_blank");
-        closeWaModal();
-        contactForm.reset();
-    });
-}
-
-
-  // Keep floating WhatsApp button synced with the same number
+ 
+  // ========== FORM SUBMISSION (SINGLE HANDLER - FIXED) ==========
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    console.log('Form submitted'); // DEBUG
+ 
+    // Validate form
+    if (!contactForm.checkValidity()) {
+      contactForm.reportValidity();
+      return;
+    }
+ 
+    // Get phone number using getElementById (FIXED)
+    const phone = document.getElementById('formPhone').value.trim();
+    console.log('Phone number entered:', phone); // DEBUG
+ 
+    // Validate phone number format - accept +XXX or digits
+    // Regex: optional +, then 7-15 digits total
+    if (!/^[\+]?[0-9]{7,15}$/.test(phone.replace(/\s+/g, ''))) {
+      alert("Please enter a valid phone number (e.g., +254758952463 or 254758952463)");
+      console.log('Phone validation failed'); // DEBUG
+      return;
+    }
+ 
+    console.log('All validations passed, opening modal'); // DEBUG
+    openWaModal();
+  });
+ 
+  // ========== MODAL INTERACTIONS ==========
+  waCancel.addEventListener('click', closeWaModal);
+ 
+  // Close modal when clicking outside
+  waModal.addEventListener('click', (e) => {
+    if (e.target === waModal) closeWaModal();
+  });
+ 
+  // Close modal on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && waModal.classList.contains('open')) closeWaModal();
+  });
+ 
+  // Open WhatsApp when confirming
+  waConfirm.addEventListener('click', () => {
+    console.log('Opening WhatsApp with URL:', pendingWaUrl); // DEBUG
+    window.open(pendingWaUrl, '_blank', 'noopener');
+    closeWaModal();
+    contactForm.reset();
+  });
+ 
+  // ========== FLOATING WHATSAPP BUTTON ==========
   const waFloat = document.querySelector('.wa-float');
-  if (waFloat) waFloat.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi M@EVE, I'd like to discuss a project.")}`;
+  if (waFloat) {
+    const floatUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi M@EVE, I'd like to discuss a project.")}`;
+    waFloat.href = floatUrl;
+    console.log('Floating button URL set:', floatUrl); // DEBUG
+  }
+</script>
 });
 </script>
 </body>
