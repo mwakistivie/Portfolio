@@ -710,15 +710,13 @@
     text += `\n\n*Message:*\n${message}`;
     return text;
   }
-  contactForm.addEventListener('submit', e => {
-    e.preventDefault();
 
     if (!contactForm.checkValidity()) {
         contactForm.reportValidity();
         return;
     }
 
-    const phone = formPhone.value.trim();
+    const phone = document.getElementById('formPhone').value.trim();
 
     if (!/^\+?[1-9]\d{7,14}$/.test(phone)) {
         alert("Please enter a valid phone number with country code.");
@@ -744,7 +742,23 @@
     e.preventDefault();
     openWaModal();
   });
-  waCancel.addEventListener('click', closeWaModal);
+  if (waCancel) {
+    waCancel.addEventListener('click', closeWaModal);
+}
+
+if (waConfirm) {
+    waConfirm.addEventListener('click', () => {
+        window.open(pendingWaUrl, "_blank");
+        closeWaModal();
+        contactForm.reset();
+    });
+}
+
+if (waModal) {
+    waModal.addEventListener('click', e => {
+        if (e.target === waModal) closeWaModal();
+    });
+}
   waModal.addEventListener('click', e => { if (e.target === waModal) closeWaModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && waModal.classList.contains('open')) closeWaModal(); });
   waConfirm.addEventListener('click', () => {
@@ -759,6 +773,7 @@
 </script>
 
 <!-- WhatsApp Click-to-Chat -->
+document.addEventListener("DOMContentLoaded", () => {
 <a href="https://wa.me/+254758952463?text=Hi%20M%40EVE%2C%20I%27d%20like%20to%20discuss%20a%20project." class="wa-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 .4C7.4.4.4 7.4.4 16c0 2.8.7 5.5 2.1 7.9L.3 31.6l7.9-2.1c2.3 1.3 4.9 1.9 7.6 1.9h.1c8.6 0 15.6-7 15.6-15.6C31.6 7.4 24.6.4 16 .4zm0 28.4h-.1c-2.4 0-4.8-.6-6.8-1.9l-.5-.3-4.7 1.2 1.3-4.6-.3-.5c-1.4-2.2-2.1-4.7-2.1-7.3 0-7.1 5.8-13 13-13s13 5.8 13 13c.1 7.2-5.7 13.4-12.8 13.4zm7.1-9.7c-.4-.2-2.3-1.1-2.6-1.3-.4-.1-.6-.2-.9.2s-1 1.3-1.2 1.5c-.2.2-.4.3-.8.1s-1.6-.6-3.1-1.9c-1.1-1-1.9-2.3-2.1-2.7-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.2-.4.4-.6.1-.3.1-.5 0-.7-.1-.2-.9-2.2-1.3-3-.3-.8-.7-.7-.9-.7h-.8c-.3 0-.7.1-1.1.5s-1.5 1.4-1.5 3.5 1.5 4 1.7 4.3c.2.3 3 4.6 7.3 6.5 1 .4 1.8.7 2.4.9 1 .3 1.9.3 2.7.2.8-.1 2.3-.9 2.7-1.9.3-.9.3-1.7.2-1.9-.1-.2-.4-.3-.8-.5z"/></svg>
 </a>
@@ -778,6 +793,7 @@
     </div>
   </div>
 </div>
+  });
 
 </body>
 </html>
