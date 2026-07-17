@@ -660,8 +660,8 @@
   </div>
   <div class="copyright">© 2026 Maeve. Designed with care. Inspired by desire to inspire.</div>
 </footer>
-document.addEventListener("DOMContentLoaded", () => {
 <script>
+  document.addEventListener("DOMContentLoaded", () => {
   // Sticky header
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
@@ -736,12 +736,15 @@ console.log("waConfirm:", waConfirm);
     return text;
   }
 
+    contactForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
     if (!contactForm.checkValidity()) {
         contactForm.reportValidity();
         return;
     }
 
-    const phone = document.getElementById('formPhone').value.trim();
+    const phone = document.getElementById("formPhone").value.trim();
 
     if (!/^\+?[1-9]\d{7,14}$/.test(phone)) {
         alert("Please enter a valid phone number with country code.");
@@ -749,6 +752,7 @@ console.log("waConfirm:", waConfirm);
     }
 
     openWaModal();
+});
 });
 
   function openWaModal() {
@@ -775,23 +779,11 @@ if (waConfirm) {
     });
 }
 
-if (waModal) {
-    waModal.addEventListener('click', e => {
-        if (e.target === waModal) closeWaModal();
-    });
-}
-  waModal.addEventListener('click', e => { if (e.target === waModal) closeWaModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && waModal.classList.contains('open')) closeWaModal(); });
-  waConfirm.addEventListener('click', () => {
-    window.open(pendingWaUrl, '_blank', 'noopener');
-    closeWaModal();
-    contactForm.reset();
-  });
 
   // Keep floating WhatsApp button synced with the same number
   const waFloat = document.querySelector('.wa-float');
   if (waFloat) waFloat.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi M@EVE, I'd like to discuss a project.")}`;
-</script>
 });
+</script>
 </body>
 </html>
