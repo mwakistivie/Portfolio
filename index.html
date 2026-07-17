@@ -660,7 +660,7 @@
   </div>
   <div class="copyright">© 2026 Maeve. Designed with care. Inspired by desire to inspire.</div>
 </footer>
-
+document.addEventListener("DOMContentLoaded", () => {
 <script>
   // Sticky header
   const header = document.getElementById('header');
@@ -763,10 +763,6 @@ console.log("waConfirm:", waConfirm);
     document.body.style.overflow = '';
   }
 
-  contactForm.addEventListener('submit', e => {
-    e.preventDefault();
-    openWaModal();
-  });
   if (waCancel) {
     waCancel.addEventListener('click', closeWaModal);
 }
@@ -796,6 +792,6 @@ if (waModal) {
   const waFloat = document.querySelector('.wa-float');
   if (waFloat) waFloat.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi M@EVE, I'd like to discuss a project.")}`;
 </script>
-
+});
 </body>
 </html>
